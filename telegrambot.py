@@ -1,23 +1,12 @@
-#coder :- Salman Faris
-
+#coder :- Jazzvi
+import serial
 import sys
 import time
 import random
 import datetime
 import telepot
-import RPi.GPIO as GPIO
 
-#LED
-def on(pin):
-        GPIO.output(pin,GPIO.HIGH)
-        return
-def off(pin):
-        GPIO.output(pin,GPIO.LOW)
-        return
-# to use Raspberry Pi board pin numbers
-GPIO.setmode(GPIO.BOARD)
-# set up GPIO output channel
-GPIO.setup(11, GPIO.OUT)
+arduino = serial.Serial('/dev/ttyUSB0', 9600)
 
 def handle(msg):
     chat_id = msg['chat']['id']
@@ -25,9 +14,9 @@ def handle(msg):
 
     print 'Got command: %s' % command
 
-    if command == 'on':
+    if command == 'A':
        bot.sendMessage(chat_id, on(11))
-    elif command =='off':
+    elif command =='B':
        bot.sendMessage(chat_id, off(11))
 
 bot = telepot.Bot('Bot Token')
@@ -36,3 +25,5 @@ print 'I am listening...'
 
 while 1:
      time.sleep(10)
+
+arduino.close()
